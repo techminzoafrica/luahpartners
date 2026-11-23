@@ -10,7 +10,7 @@ import { SelectField } from "@/components/forms/SelectField";
 import { PhoneField } from "@/components/forms/PhoneField";
 import { TextareaField } from "@/components/forms/TextareaField";
 import { TextField } from "@/components/forms/TextField";
-import { FormReadyMessage } from "@/components/forms/FormReadyMessage";
+import { FormSuccessOverlay } from "@/components/forms/FormSuccessOverlay";
 
 const feedbackOptions = [{ value: "compliment", label: "A compliment" }, { value: "concern", label: "A concern or complaint" }];
 
@@ -21,30 +21,49 @@ export function FeedbackForm() {
     resolver: zodResolver(feedbackSchema), mode: "onChange", reValidateMode: "onChange",
     defaultValues: { feedbackType: "compliment", name: "", email: "", phone: "", property: "", person: "", message: "", publicQuotePermission: false, followUp: false },
   });
-  const [isReady, setIsReady] = useState(false);
-  return <form className="border border-brand-sand bg-white p-6 sm:p-8" noValidate onSubmit={handleSubmit(() => setIsReady(true), () => setIsReady(false))}>
-    <p className="text-xs text-brand-muted">* Required fields</p>
-    <div className="mt-6 space-y-6">
-      <SelectField
-          control={control}
-          name="feedbackType"
-          label="This is"
-          required
-          options={feedbackOptions}
-          errorId="feedback-type-error"
-          hint="Choose a compliment or concern so we can send it to the right person."
-        />
-      <TextField label="Your name (optional)" error={errors.name} errorId="feedback-name-error" placeholder="Your name" {...register("name")} />
-      <TextField label="Email" error={errors.email} errorId="feedback-email-error" type="email" placeholder="you@example.com" {...register("email")} required />
-      <PhoneField control={control} name="phone" label="Phone (optional)" error={errors.phone} errorId="feedback-phone-error" id="feedback-phone" />
-      <TextField label="Property, project, or address (optional)" error={errors.property} errorId="feedback-property-error" placeholder="Where this happened, if relevant" {...register("property")} />
-      <TextField label={<>Who helped you or who you&apos;d like us to know about (optional)</>} error={errors.person} errorId="feedback-person-error" placeholder="Person or team name" {...register("person")} />
-      <TextareaField label="What happened" error={errors.message} errorId="feedback-message-error" placeholder="Tell it your way, dates and details help us act on it." {...register("message")} required />
-      <label className="flex cursor-pointer items-start gap-3 text-[13px] font-normal leading-[1.7] text-brand-muted"><input type="checkbox" className="mt-0.5 size-[18px] shrink-0 accent-brand-gold" {...register("publicQuotePermission")} />You may quote this publicly — on the website, in marketing, or as a review — using my first name and last initial. I understand I can withdraw this permission at any time by emailing Info@luahpartners.com.</label>
-      <label className="flex cursor-pointer items-start gap-3 text-[13px] font-normal leading-[1.7] text-brand-muted"><input type="checkbox" className="mt-0.5 size-[18px] shrink-0 accent-brand-gold" {...register("followUp")} />Please follow up with me about this. (Leave a name and email above so we can.)</label>
+  const [isSuccessOpen, setIsSuccessOpen] = useState(false);
+
+  return (
+    <div className="relative">
+      <form
+        aria-hidden={isSuccessOpen}
+        className="border border-brand-sand bg-white p-6 sm:p-8"
+        noValidate
+        onSubmit={handleSubmit(
+          () => setIsSuccessOpen(true),
+          () => setIsSuccessOpen(false)
+        )}
+      >
+        <p className="text-xs text-brand-muted">* Required fields</p>
+        <div className="mt-6 space-y-6">
+          <SelectField
+            control={control}
+            name="feedbackType"
+            label="This is"
+            required
+            options={feedbackOptions}
+            errorId="feedback-type-error"
+            hint="Choose a compliment or concern so we can send it to the right person."
+          />
+          <TextField label="Your name (optional)" error={errors.name} errorId="feedback-name-error" placeholder="Your name" {...register("name")} />
+          <TextField label="Email" error={errors.email} errorId="feedback-email-error" type="email" placeholder="you@example.com" {...register("email")} required />
+          <PhoneField control={control} name="phone" label="Phone (optional)" error={errors.phone} errorId="feedback-phone-error" id="feedback-phone" />
+          <TextField label="Property, project, or address (optional)" error={errors.property} errorId="feedback-property-error" placeholder="Where this happened, if relevant" {...register("property")} />
+          <TextField label={<>Who helped you or who you&apos;d like us to know about (optional)</>} error={errors.person} errorId="feedback-person-error" placeholder="Person or team name" {...register("person")} />
+          <TextareaField label="What happened" error={errors.message} errorId="feedback-message-error" placeholder="Tell it your way, dates and details help us act on it." {...register("message")} required />
+          <label className="flex cursor-pointer items-start gap-3 text-[13px] font-normal leading-[1.7] text-brand-muted"><input type="checkbox" className="mt-0.5 size-[18px] shrink-0 accent-brand-gold" {...register("publicQuotePermission")} />You may quote this publicly — on the website, in marketing, or as a review — using my first name and last initial. I understand I can withdraw this permission at any time by emailing Info@luahpartners.com.</label>
+          <label className="flex cursor-pointer items-start gap-3 text-[13px] font-normal leading-[1.7] text-brand-muted"><input type="checkbox" className="mt-0.5 size-[18px] shrink-0 accent-brand-gold" {...register("followUp")} />Please follow up with me about this. (Leave a name and email above so we can.)</label>
+        </div>
+        <button type="submit" className="mt-6 inline-flex min-h-12 items-center gap-3 border border-brand-gold-light bg-brand-gold-light px-6 py-3 text-sm font-semibold text-brand-navy transition-colors hover:bg-brand-gold">Send feedback<Arrow /></button>
+        <p className="mt-6 text-[13px] leading-[1.8] text-brand-muted">Handled under our <Link href="/privacy-policy" className="underline underline-offset-2">Privacy Policy</Link>. We do not sell your information, and we never publish feedback without the permission box above.</p>
+      </form>
+
+      <FormSuccessOverlay
+        open={isSuccessOpen}
+        onClose={() => setIsSuccessOpen(false)}
+        title="Feedback noted"
+        caption="Online delivery is coming soon — you can also email Info@luahpartners.com."
+      />
     </div>
-    <button type="submit" className="mt-6 inline-flex min-h-12 items-center gap-3 border border-brand-gold-light bg-brand-gold-light px-6 py-3 text-sm font-semibold text-brand-navy transition-colors hover:bg-brand-gold">Send feedback<Arrow /></button>
-    <FormReadyMessage visible={isReady} />
-    <p className="mt-6 text-[13px] leading-[1.8] text-brand-muted">Handled under our <Link href="/privacy-policy" className="underline underline-offset-2">Privacy Policy</Link>. We do not sell your information, and we never publish feedback without the permission box above.</p>
-  </form>;
+  );
 }

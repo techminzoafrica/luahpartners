@@ -120,13 +120,13 @@ export function Header() {
             ))}
           </div>
 
-          {/* Desktop Make a Payment CTA Button */}
+          {/* Desktop Waiting List CTA Button */}
           <div className="hidden lg:block shrink-0">
             <Link
-              href="/make-payment"
+              href="/listing#notify"
               className="inline-flex min-h-12 items-center justify-center bg-brand-gold-light px-6 py-3 text-sm font-semibold text-brand-dark transition-colors hover:bg-brand-gold"
             >
-              Make a payment
+              Join waiting list
             </Link>
           </div>
 
@@ -204,11 +204,11 @@ export function Header() {
             </nav>
             <div className="pt-7">
               <Link
-                href="/make-payment"
+                href="/listing#notify"
                 onClick={() => setMobileMenuOpen(false)}
                 className="inline-flex min-h-12 w-full items-center justify-center bg-brand-gold-light px-6 py-3 text-sm font-semibold text-brand-dark transition-colors duration-150 hover:bg-brand-gold"
               >
-                Make a payment
+                Join waiting list
               </Link>
             </div>
           </div>

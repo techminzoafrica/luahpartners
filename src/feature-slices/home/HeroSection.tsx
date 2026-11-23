@@ -56,10 +56,10 @@ export function HeroSection() {
             </Link>
 
             <Link
-              href="/make-payment"
+              href="/listing#notify"
               className="inline-flex items-center justify-center px-6 py-3.5 border border-white/20 hover:border-white/50 text-white font-semibold text-sm transition-colors bg-white/5"
             >
-              Make a payment
+              Join waiting list
             </Link>
           </div>
         </div>
