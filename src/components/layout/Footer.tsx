@@ -141,6 +141,24 @@ export function Footer() {
           <p>Payments processed securely by Stripe · All amounts in USD</p>
         </div>
       </div>
+
+      {/* Made By Minzo Africa Credit Bar */}
+      <div className="border-t border-white/10 bg-brand-navy">
+        <div className="max-w-page mx-auto px-6 sm:px-12 py-3.5 flex items-center justify-center">
+          <div className="inline-flex items-center gap-2.5 text-sm text-white/80">
+            <span>
+              Made By <strong className="font-bold text-white">Minzo Africa</strong>
+            </span>
+            <Image
+              src="/images/minzologo.webp"
+              alt="Minzo Africa logo"
+              width={26}
+              height={23}
+              className="h-6 w-auto object-contain"
+            />
+          </div>
+        </div>
+      </div>
     </footer>
   );
 }
