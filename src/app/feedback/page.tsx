@@ -1,21 +1,15 @@
 import Image from "next/image";
 import Link from "next/link";
-import type { Metadata } from "next";
+import { JsonLd } from "@/components/seo/JsonLd";
 import { FeedbackForm } from "@/feature-slices/feedback/FeedbackForm";
+import { createBreadcrumbJsonLd, createPageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Feedback | Luah Partners",
-  description: null,
-  alternates: { canonical: "https://www.luahpartners.com/feedback" },
-  openGraph: {
-    title: "Feedback | Luah Partners",
-    url: "https://www.luahpartners.com/feedback",
-    siteName: "Luah Partners",
-    type: "website",
-    images: [{ url: "https://www.luahpartners.com/images/home-improvement-og.png", width: 2500, height: 1330 }],
-  },
-  twitter: { card: "summary_large_image", title: "Feedback | Luah Partners", images: ["https://www.luahpartners.com/images/home-improvement-og.png"] },
-};
+export const metadata = createPageMetadata({
+  title: "Feedback",
+  description:
+    "Share a compliment, review, or concern with Luah Partners. Every message is reviewed directly by our Washington, DC and Maryland residential team.",
+  path: "/feedback",
+});
 
 function Arrow() { return <Image src="/images/listing-arrow-right.svg" alt="" aria-hidden="true" width={16} height={16} />; }
 
@@ -29,6 +23,12 @@ function ContactCard() {
 
 export default function FeedbackPage() {
   return <>
+    <JsonLd
+      data={createBreadcrumbJsonLd([
+        { name: "Home", path: "/" },
+        { name: "Feedback", path: "/feedback" },
+      ])}
+    />
     <section className="bg-brand-surface"><div className="mx-auto max-w-page px-6 py-14 sm:px-12 sm:py-16"><p className="text-xs font-bold uppercase tracking-tag text-brand-gold">Feedback</p><h1 className="mt-6 max-w-[1050px] text-4xl font-bold leading-[1.12] text-brand-navy sm:text-5xl lg:text-[56px]">Tell us how we did — good or bad</h1><p className="mt-6 max-w-[900px] text-base leading-[1.75] text-brand-navy sm:text-[17px]">If someone on our team took care of you, we want to know who and what they did. If we fell short, we want to know that even more — a complaint we never hear is a problem we never fix. Residents, property owners, home improvement clients, applicants, and vendors are all welcome to use this page.</p></div></section>
 
     <section className="bg-white"><div className="mx-auto max-w-page px-6 py-14 sm:px-12 sm:py-16"><h2 className="text-3xl font-bold leading-[1.25] text-brand-navy sm:text-4xl">Something went right. Something went wrong.</h2><div className="mt-8 grid gap-x-6 md:grid-cols-2"><DetailCard number="01" title="Compliments & reviews"><p>Name the person. A maintenance tech who showed up when they said they would, a leasing agent who explained the lease line by line, a crew that left the site clean — we pass every compliment to the person and their supervisor, and it goes in their file.</p><p className="mt-5">If you&apos;re willing to have your words quoted publicly, check the permission box on the form. We never publish feedback without asking first.</p></DetailCard><DetailCard number="02" title="Concerns & complaints">A repair that dragged, a charge you don&apos;t understand, a call that never came back, someone who treated you poorly — tell us plainly. You will not be penalized for complaining, and raising a concern here has no effect on your lease, your application, or your contract with us.</DetailCard></div></div></section>

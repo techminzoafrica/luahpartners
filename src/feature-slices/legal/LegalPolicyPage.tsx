@@ -2,8 +2,8 @@ import Image from "next/image";
 import Link from "next/link";
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
-
-const sharingImage = "https://www.luahpartners.com/images/home-improvement-og.png";
+import { JsonLd } from "@/components/seo/JsonLd";
+import { createBreadcrumbJsonLd, createPageMetadata } from "@/lib/seo";
 
 const policyLinks = [
   { label: "Terms of Service", href: "/terms-of-service" },
@@ -40,27 +40,7 @@ export function createLegalPolicyMetadata({
   path,
   description,
 }: LegalPolicyMetadata): Metadata {
-  const url = `https://www.luahpartners.com${path}`;
-
-  return {
-    title: `${title} | Luah Partners`,
-    description,
-    alternates: { canonical: url },
-    openGraph: {
-      title: `${title} | Luah Partners`,
-      description,
-      url,
-      siteName: "Luah Partners",
-      type: "website",
-      images: [{ url: sharingImage, width: 2500, height: 1330 }],
-    },
-    twitter: {
-      card: "summary_large_image",
-      title: `${title} | Luah Partners`,
-      description,
-      images: [sharingImage],
-    },
-  };
+  return createPageMetadata({ title, path, description });
 }
 
 function Arrow() {
@@ -83,6 +63,12 @@ export function LegalPolicyPage({
 }: LegalPolicyPageProps) {
   return (
     <>
+      <JsonLd
+        data={createBreadcrumbJsonLd([
+          { name: "Home", path: "/" },
+          { name: title, path: currentPath },
+        ])}
+      />
       <section className="bg-brand-surface">
         <div className="mx-auto max-w-page px-6 py-14 sm:px-12 sm:py-16">
           <p className="text-xs font-bold uppercase tracking-tag text-brand-gold-light">

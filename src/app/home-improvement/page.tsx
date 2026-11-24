@@ -1,29 +1,21 @@
 import Image from "next/image";
-import type { Metadata } from "next";
+import { JsonLd } from "@/components/seo/JsonLd";
 import { DataTable, type DataTableColumn, type DataTableRow } from "@/components/tables/DataTable";
 import { HomeImprovementQuoteForm } from "@/feature-slices/home-improvement/HomeImprovementQuoteForm";
+import {
+  BUSINESS_CONTACT,
+  createBreadcrumbJsonLd,
+  createPageMetadata,
+  ORGANIZATION_ID,
+  SITE_URL,
+} from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Home Improvement | Luah Partners",
-  description: "Repairs and renovations, run the way we manage our own homes.",
-  alternates: {
-    canonical: "https://www.luahpartners.com/home-improvement",
-  },
-  openGraph: {
-    title: "Home Improvement | Luah Partners",
-    description: "Repairs and renovations, run the way we manage our own homes.",
-    url: "https://www.luahpartners.com/home-improvement",
-    siteName: "Luah Partners",
-    type: "website",
-    images: ["https://www.luahpartners.com/images/home-improvement-og.png"],
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "Home Improvement | Luah Partners",
-    description: "Repairs and renovations, run the way we manage our own homes.",
-    images: ["https://www.luahpartners.com/images/home-improvement-og.png"],
-  },
-};
+export const metadata = createPageMetadata({
+  title: "Home Improvement",
+  description:
+    "Licensed, insured, and bonded residential remodeling and repair in Washington, DC and Maryland — bathrooms, kitchens, concrete, flooring, painting, and decks.",
+  path: "/home-improvement",
+});
 
 const commitments = [
   {
@@ -149,8 +141,51 @@ function DetailCard({ number, title, detail }: { number: string; title: string; 
 }
 
 export default function HomeImprovementPage() {
+  const contractorJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "HomeAndConstructionBusiness",
+    "@id": `${SITE_URL}/home-improvement#service`,
+    name: "Luah Partners Home Improvement",
+    url: `${SITE_URL}/home-improvement`,
+    image: `${SITE_URL}/images/home-improvement-hero.jpg`,
+    telephone: BUSINESS_CONTACT.telephone,
+    email: BUSINESS_CONTACT.email,
+    parentOrganization: { "@id": ORGANIZATION_ID },
+    address: {
+      "@type": "PostalAddress",
+      streetAddress: BUSINESS_CONTACT.streetAddress,
+      addressLocality: BUSINESS_CONTACT.addressLocality,
+      addressRegion: BUSINESS_CONTACT.addressRegion,
+      postalCode: BUSINESS_CONTACT.postalCode,
+      addressCountry: BUSINESS_CONTACT.addressCountry,
+    },
+    areaServed: [
+      { "@type": "City", name: "Washington, DC" },
+      { "@type": "State", name: "Maryland" },
+    ],
+    hasOfferCatalog: {
+      "@type": "OfferCatalog",
+      name: "Residential Remodeling and Repair Services",
+      itemListElement: serviceRows.map((row) => ({
+        "@type": "Offer",
+        itemOffered: {
+          "@type": "Service",
+          name: row.service,
+          description: row.description,
+        },
+      })),
+    },
+  };
+
   return (
     <>
+      <JsonLd data={contractorJsonLd} />
+      <JsonLd
+        data={createBreadcrumbJsonLd([
+          { name: "Home", path: "/" },
+          { name: "Home Improvement", path: "/home-improvement" },
+        ])}
+      />
       <section className="bg-brand-navy">
         <div className="mx-auto flex max-w-page flex-col lg:flex-row">
           <div className="flex flex-1 flex-col px-6 py-14 sm:px-12 sm:py-16">

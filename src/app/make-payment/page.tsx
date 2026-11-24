@@ -1,29 +1,15 @@
 import Image from "next/image";
 import Link from "next/link";
-import type { Metadata } from "next";
+import { JsonLd } from "@/components/seo/JsonLd";
 import { PaymentForm } from "@/feature-slices/payments/PaymentForm";
+import { createBreadcrumbJsonLd, createPageMetadata } from "@/lib/seo";
 
-const paymentDescription = "All payments are collected in United States dollars (USD) and processed by Stripe. Luah Partners does not see or store your card or bank account numbers. Your statement will read LUAH PARTNERS.";
-
-export const metadata: Metadata = {
-  title: "Make Payment | Luah Partners",
-  description: paymentDescription,
-  alternates: { canonical: "https://www.luahpartners.com/make-payment" },
-  openGraph: {
-    title: "Make Payment | Luah Partners",
-    description: paymentDescription,
-    url: "https://www.luahpartners.com/make-payment",
-    siteName: "Luah Partners",
-    type: "website",
-    images: ["https://www.luahpartners.com/images/home-improvement-og.png"],
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "Make Payment | Luah Partners",
-    description: paymentDescription,
-    images: ["https://www.luahpartners.com/images/home-improvement-og.png"],
-  },
-};
+export const metadata = createPageMetadata({
+  title: "Make a Payment",
+  description:
+    "Pay rent, security deposits, application fees, or invoices online in USD via Stripe. Luah Partners never stores card or bank credentials.",
+  path: "/make-payment",
+});
 
 const paymentReasons = [
   { number: "01", title: "Rent", detail: "Pay monthly rent for a unit you currently lease from Luah Partners. Payments post to your ledger on the business day they are received. Partial payments do not waive amounts still due under your lease." },
@@ -55,6 +41,12 @@ function DetailCard({ number, title, detail }: { number: string; title: string; 
 export default function MakePaymentPage() {
   return (
     <>
+      <JsonLd
+        data={createBreadcrumbJsonLd([
+          { name: "Home", path: "/" },
+          { name: "Make a Payment", path: "/make-payment" },
+        ])}
+      />
       <section className="bg-brand-navy">
         <div className="mx-auto max-w-page px-6 py-14 sm:px-12 sm:py-16">
           <p className="text-xs font-bold uppercase tracking-tag text-brand-gold-light">Secure payments</p>

@@ -1,24 +1,15 @@
 import Image from "next/image";
 import Link from "next/link";
-import type { Metadata } from "next";
+import { JsonLd } from "@/components/seo/JsonLd";
 import { ListingAlertForm } from "@/feature-slices/listings/ListingAlertForm";
+import { createBreadcrumbJsonLd, createPageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Listings | Luah Partners",
-  description: null,
-  openGraph: {
-    title: "Listings | Luah Partners",
-    url: "https://www.luahpartners.com/listing",
-    siteName: "Luah Partners",
-    type: "website",
-    images: ["https://www.luahpartners.com/images/luah-about-og.png"],
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "Listings | Luah Partners",
-    images: ["https://www.luahpartners.com/images/luah-about-og.png"],
-  },
-};
+export const metadata = createPageMetadata({
+  title: "Listings",
+  description:
+    "Browse residential homes for lease and upcoming renovations in Washington, DC and Maryland, or join the Luah Partners waiting list for availability alerts.",
+  path: "/listing",
+});
 
 type ListingStatus = "for-lease" | "coming-soon" | "under-renovation";
 
@@ -164,6 +155,12 @@ function Availability({ records }: { records: ListingRecord[] }) {
 export default function ListingsPage() {
   return (
     <>
+      <JsonLd
+        data={createBreadcrumbJsonLd([
+          { name: "Home", path: "/" },
+          { name: "Listings", path: "/listing" },
+        ])}
+      />
       <section className="bg-brand-surface">
         <div className="max-w-page mx-auto px-6 py-14 sm:px-12 sm:py-16">
           <p className="text-xs font-bold uppercase tracking-tag text-brand-gold">

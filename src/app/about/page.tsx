@@ -1,27 +1,13 @@
 import Image from "next/image";
-import type { Metadata } from "next";
+import { JsonLd } from "@/components/seo/JsonLd";
+import { createBreadcrumbJsonLd, createPageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "About | Luah Partners",
+export const metadata = createPageMetadata({
+  title: "About",
   description:
-    "Learn about our Real Estate Rental Agency, our values, and our commitment to providing exceptional rental services. Discover more about us today.",
-  openGraph: {
-    title: "About | Luah Partners",
-    description:
-      "Learn about our Real Estate Rental Agency, our values, and our commitment to providing exceptional rental services. Discover more about us today.",
-    url: "https://www.luahpartners.com/about",
-    siteName: "Luah Partners",
-    type: "website",
-    images: ["https://www.luahpartners.com/images/luah-about-og.png"],
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "About | Luah Partners",
-    description:
-      "Learn about our Real Estate Rental Agency, our values, and our commitment to providing exceptional rental services. Discover more about us today.",
-    images: ["https://www.luahpartners.com/images/luah-about-og.png"],
-  },
-};
+    "Luah Partners, Inc. is a licensed, bonded residential real estate company serving Washington, DC and Maryland across development, leasing, and management.",
+  path: "/about",
+});
 
 const companyFacts = [
   {
@@ -114,6 +100,12 @@ function DetailCard({
 export default function AboutPage() {
   return (
     <>
+      <JsonLd
+        data={createBreadcrumbJsonLd([
+          { name: "Home", path: "/" },
+          { name: "About", path: "/about" },
+        ])}
+      />
       <section className="bg-brand-surface">
         <div className="max-w-page mx-auto px-6 py-14 sm:px-12 sm:py-16">
           <p className="text-xs font-bold uppercase tracking-tag text-brand-gold">

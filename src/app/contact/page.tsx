@@ -1,28 +1,39 @@
 import Link from "next/link";
-import type { Metadata } from "next";
+import { JsonLd } from "@/components/seo/JsonLd";
 import { ContactForm } from "@/feature-slices/contact/ContactForm";
+import {
+  createBreadcrumbJsonLd,
+  createPageMetadata,
+  ORGANIZATION_ID,
+  SITE_URL,
+} from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Contact | Luah Partners",
-  description: null,
-  alternates: { canonical: "https://www.luahpartners.com/contact" },
-  openGraph: {
-    title: "Contact | Luah Partners",
-    url: "https://www.luahpartners.com/contact",
-    siteName: "Luah Partners",
-    type: "website",
-    images: ["https://www.luahpartners.com/images/home-improvement-og.png"],
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "Contact | Luah Partners",
-    images: ["https://www.luahpartners.com/images/home-improvement-og.png"],
-  },
-};
+export const metadata = createPageMetadata({
+  title: "Contact",
+  description:
+    "Contact Luah Partners in Washington, DC by phone (800 800 2911), email, or online form for leasing, property management, or home improvement inquiries.",
+  path: "/contact",
+});
 
 export default function ContactPage() {
+  const contactPageJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "ContactPage",
+    "@id": `${SITE_URL}/contact#webpage`,
+    url: `${SITE_URL}/contact`,
+    name: "Contact Luah Partners",
+    mainEntity: { "@id": ORGANIZATION_ID },
+  };
+
   return (
     <>
+      <JsonLd data={contactPageJsonLd} />
+      <JsonLd
+        data={createBreadcrumbJsonLd([
+          { name: "Home", path: "/" },
+          { name: "Contact", path: "/contact" },
+        ])}
+      />
       <section className="bg-brand-surface">
         <div className="mx-auto max-w-page px-6 py-14 sm:px-12 sm:py-16">
           <p className="text-xs font-bold uppercase tracking-tag text-brand-gold">Contact</p>

@@ -1,31 +1,16 @@
 import Image from "next/image";
 import Link from "next/link";
-import type { Metadata } from "next";
+import { JsonLd } from "@/components/seo/JsonLd";
 import { DataTable, type DataTableColumn, type DataTableRow } from "@/components/tables/DataTable";
 import { CareersApplicationForm } from "@/feature-slices/careers/CareersApplicationForm";
+import { createBreadcrumbJsonLd, createPageMetadata } from "@/lib/seo";
 
-const careersDescription =
-  "We're a small team that does the work rather than brokering it out, and we're looking for people who want ownership of a market they already know. If one of the roles below fits, tell us — and if none of them do, tell us that too.";
-
-export const metadata: Metadata = {
-  title: "Careers | Luah Partners",
-  description: careersDescription,
-  alternates: { canonical: "https://www.luahpartners.com/careers" },
-  openGraph: {
-    title: "Careers | Luah Partners",
-    description: careersDescription,
-    url: "https://www.luahpartners.com/careers",
-    siteName: "Luah Partners",
-    type: "website",
-    images: ["https://www.luahpartners.com/images/home-improvement-og.png"],
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "Careers | Luah Partners",
-    description: careersDescription,
-    images: ["https://www.luahpartners.com/images/home-improvement-og.png"],
-  },
-};
+export const metadata = createPageMetadata({
+  title: "Careers",
+  description:
+    "Explore careers at Luah Partners in Washington, DC and Maryland across property management, leasing, business development, marketing, and skilled trades.",
+  path: "/careers",
+});
 
 const careerBenefits = [
   { number: "01", title: "One region, known well", detail: "We work the District and the Maryland suburbs only. Local knowledge is the job, not a bonus." },
@@ -93,6 +78,12 @@ function DetailCard({ number, title, detail }: { number: string; title: string; 
 export default function CareersPage() {
   return (
     <>
+      <JsonLd
+        data={createBreadcrumbJsonLd([
+          { name: "Home", path: "/" },
+          { name: "Careers", path: "/careers" },
+        ])}
+      />
       <section className="bg-brand-surface">
         <div className="mx-auto max-w-page px-6 py-14 sm:px-12 sm:py-16">
           <p className="text-xs font-bold uppercase tracking-tag text-brand-gold">Careers</p>

@@ -1,21 +1,17 @@
-import type { Metadata } from "next";
+import { JsonLd } from "@/components/seo/JsonLd";
+import {
+  createBreadcrumbJsonLd,
+  createPageMetadata,
+  ORGANIZATION_ID,
+  SITE_URL,
+} from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Services | Luah Partners",
-  description: null,
-  openGraph: {
-    title: "Services | Luah Partners",
-    url: "https://www.luahpartners.com/services",
-    siteName: "Luah Partners",
-    type: "website",
-    images: ["https://www.luahpartners.com/images/luah-about-og.png"],
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "Services | Luah Partners",
-    images: ["https://www.luahpartners.com/images/luah-about-og.png"],
-  },
-};
+export const metadata = createPageMetadata({
+  title: "Services",
+  description:
+    "Full-cycle residential real estate services in Washington, DC and Maryland: acquisition, development, leasing, property management, and home improvement.",
+  path: "/services",
+});
 
 const services = [
   {
@@ -104,8 +100,39 @@ function ServiceCard({
 }
 
 export default function ServicesPage() {
+  const servicesJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    "@id": `${SITE_URL}/services#service`,
+    name: "Residential Real Estate Services",
+    provider: { "@id": ORGANIZATION_ID },
+    areaServed: [
+      { "@type": "City", name: "Washington, DC" },
+      { "@type": "State", name: "Maryland" },
+    ],
+    hasOfferCatalog: {
+      "@type": "OfferCatalog",
+      name: "Luah Partners Services",
+      itemListElement: services.map((service) => ({
+        "@type": "Offer",
+        itemOffered: {
+          "@type": "Service",
+          name: service.title,
+          description: service.description,
+        },
+      })),
+    },
+  };
+
   return (
     <>
+      <JsonLd data={servicesJsonLd} />
+      <JsonLd
+        data={createBreadcrumbJsonLd([
+          { name: "Home", path: "/" },
+          { name: "Services", path: "/services" },
+        ])}
+      />
       <section className="bg-brand-surface">
         <div className="max-w-page mx-auto px-6 py-14 sm:px-12 sm:py-16">
           <p className="text-xs font-bold uppercase tracking-tag text-brand-gold">
